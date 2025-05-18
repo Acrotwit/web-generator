@@ -21,7 +21,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="template1.html">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="template2.html">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
 </Project>
