@@ -13,7 +13,7 @@ int templateSelect() { //function to prompt user for template file
     return templatenumber;
 }
 
-// function to read the template file from \resources folder and return the content as a string
+// function to read the template file from current directory and return the content as a string
 string filereader(int x) {
     // variable to store the content of the file
 	string webpage; 
@@ -30,6 +30,7 @@ string filereader(int x) {
         }
     } else {
         cout << "Unable to open file or does not exist" << endl;
+		return "error";
     }
     cout << webpage << endl;
     file.close();
@@ -37,6 +38,52 @@ string filereader(int x) {
     return webpage;
 }
 
+// Struct to store student details
+struct StudentDetails {
+    string name;
+    string id;
+    string image;
+};
+
+// function to prompt user for student details
+// and return the details as a struct
+StudentDetails studentdetailsinput() {
+    StudentDetails details;
+    cout << "Enter the image path of student photo: " << endl;
+    cin >> details.image;
+    cout << "Enter the name of the student: " << endl;
+    cin >> details.name;
+    cout << "Enter the ID of the student: " << endl;
+    cin >> details.id;
+
+    return details;
+}
+// function to write the changes to the webpage variable
+    string filewriter(string webpage, string x, string y, string z) {
+        size_t img_pos = webpage.find("src=\"\"");
+        if (img_pos != string::npos) {
+            webpage.replace(img_pos, 7, "src=\"" + x + "\"");
+        }
+
+        size_t name_pos = webpage.find("Student_Name");
+        if (name_pos != string::npos) {
+            webpage.replace(name_pos, 12, y);
+        }
+
+        size_t id_pos = webpage.find("Student_Id");
+        if (id_pos != string::npos) {
+            webpage.replace(id_pos, 10, z);
+        }
+
+        return webpage;
+    }
+
+    string webpagecreator(string webpage) {
+		ofstream file("webpage.html");
+		file << webpage;
+		file.close();
+        return webpage;
+    }
 
 
 
@@ -61,7 +108,16 @@ int main() {
         }
     }
     // call the function to read the template file and return the content as a string
-    filereader(templatenumber);
+    string webpage = filereader(templatenumber);
+	StudentDetails details = studentdetailsinput();
+	webpage = filewriter(webpage, details.name, details.id, details.image);
+	cout << webpage << endl;
+    webpagecreator(webpage);
+    cout << "The file has been created successfully" << endl;
+    cout << "The file is named webpage.html" << endl;
+    cout << "The file is located in the same directory as this program" << endl;
+	cout << "Please check the file for the changes made" << endl;
+	 // call the function to prompt user for changes they wish to make to the file
 }
 // read the template file and return the content as a string
 
